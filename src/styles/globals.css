@@ -1,0 +1,9 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Merienda&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Merienda', cursive;
+}
