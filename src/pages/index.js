@@ -25,10 +25,10 @@ const Countdown = () => {
 
   return (
     <div className="mt-4 flex justify-center gap-4 text-white font-bold text-lg">
-      <div className="bg-black bg-opacity-40 px-3 py-1 rounded">{timeLeft.days}d</div>
-      <div className="bg-black bg-opacity-40 px-3 py-1 rounded">{timeLeft.hours}h</div>
-      <div className="bg-black bg-opacity-40 px-3 py-1 rounded">{timeLeft.minutes}m</div>
-      <div className="bg-black bg-opacity-40 px-3 py-1 rounded">{timeLeft.seconds}s</div>
+      <div className="bg-black bg-opacity-20 px-5 py-3 rounded">{timeLeft.days}d</div>
+      <div className="bg-black bg-opacity-20 px-5 py-3 rounded">{timeLeft.hours}h</div>
+      <div className="bg-black bg-opacity-20 px-5 py-3 rounded">{timeLeft.minutes}m</div>
+      <div className="bg-black bg-opacity-20 px-5 py-3 rounded">{timeLeft.seconds}s</div>
     </div>
   );
 };
@@ -50,39 +50,48 @@ export default function Home() {
         </div>
       </header>
 
-      <section
-        className="relative bg-cover bg-center h-[75vh] flex flex-col justify-center items-center text-white text-center"
-        style={{ backgroundImage: "url(/images/hero.png)" }}
-      >
+      <section className="flex flex-col lg:flex-row w-full min-h-[75vh]">
+        {/* Left Half - Static Image */}
+        <div className="w-full lg:w-1/2 h-[40vh] lg:h-auto">
+          <img
+            src="/images/hero.png"
+            alt="Durga Puja"
+            className="w-full h-full object-cover"
+          />
+        </div>
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
-
-        {/* Content */}
-        <div className="relative z-10">
-          <h2 className="text-4xl font-bold mb-2" data-aos="fade-down">
-            Sharadotsav 2025
-          </h2>
-          <p className="text-lg" data-aos="fade-up">
-            26–28 Sep | Weston-Under-Weatherly Village Hall
-          </p>
-          <Countdown />
+        {/* Right Half - Solid Background with Content */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center bg-maroon p-8">
+          <div className="text-center max-w-xs" data-aos="fade-left">
+            <h2 className="text-4xl font-bold mb-2 text-white">Sharadotsav 2025</h2>
+            <p className="text-lg text-white mb-4">
+              26–28 Sep | Weston-Under-Weatherly Village Hall
+            </p>
+            <Countdown />
+          </div>
         </div>
       </section>
 
-      <section className="py-16 px-6 bg-white text-gray-800" data-aos="fade-up">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">About Us</h2>
-          <p className="text-lg leading-relaxed  text-left">
-            <strong>Warwickshire Sarbojonin</strong> is a vibrant cultural association dedicated to promote and preserve the rich heritage of India and its culture. Through a diverse range of activities including performing arts, music, dance, visual arts and festive community celebrations, it seeks to foster cultural awareness and appreciation. The association actively supports artists, curates cultural events and offers educational initiatives to engage and enrich wider community present in the United Kingdom.
-          </p>
+
+     <section className="py-16 px-6 lg:p-0 bg-gray-50 text-gray-800" data-aos="fade-up">
+        <div className="lg:mx-0 flex flex-col lg:flex-row lg:justify-between items-center gap-12">
+          <div className="w-full lg:w-1/2 lg:pl-32 pb-4" data-aos="fade-left">
+            <h2 className="text-3xl font-bold mb-4 text-left">About Us</h2>
+            <p className="text-lg leading-relaxed text-left">
+              <strong>Warwickshire Sarbojonin</strong> is a vibrant cultural association dedicated to promote and preserve the rich heritage of India and its culture. Through a diverse range of activities including performing arts, music, dance, visual arts and festive community celebrations, it seeks to foster cultural awareness and appreciation. The association actively supports artists, curates cultural events and offers educational initiatives to engage and enrich wider community present in the United Kingdom.
+            </p>
+          </div>
+          <div className="w-full lg:w-1/2 flex justify-end" data-aos="fade-right">
+            <img src="/images/about-us.png" alt="Community" />
+          </div>
         </div>
       </section>
 
-      <section className="py-16 px-6 bg-gray-50" data-aos="fade-up">
+
+      <section className="py-16 px-6 bg-white" data-aos="fade-up">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold">Upcoming Events</h2>
-          <p className="max-w-4xl mx-auto text-lg leading-relaxed pt-8">
+          <p className="max-w-6xl mx-auto text-lg leading-relaxed pt-8">
             Warwickshire Sarbojonin is all set to organise its first ever Durga Puja in Warwick, UK. Something truly special is happening for Durga Puja in Warwickshire this year! Our very own incredibly skilled sculptor, Debabrata Mukhopadhyay, is bringing the Durga idol to life here in Warwick, U.K. Come and be a part of our festivities and share in the joy. We welcome everyone with open arms!!
           </p>
         </div>

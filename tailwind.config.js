@@ -8,6 +8,9 @@ module.exports = {
       fontFamily: {
        sans: ['"Merienda"', 'cursive'],
       },
+      colors: {
+        maroon: '#6c0508',
+      },
     },
   },
   plugins: [],
