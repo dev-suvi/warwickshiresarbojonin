@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-       sans: ['"Merienda"', 'cursive'],
+       sans: ['"Barlow"', 'sans-serif'],
       },
       colors: {
         maroon: '#6c0508',

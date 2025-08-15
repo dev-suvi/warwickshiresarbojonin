@@ -1,15 +1,19 @@
+import '../styles/globals.css';
 
-import '../styles/globals.css'
-import "lightgallery/css/lightgallery.css";
-import "lightgallery/css/lg-thumbnail.css";
-import "lightgallery/css/lg-zoom.css";
-import 'aos/dist/aos.css';
-import AOS from 'aos';
-import { useEffect } from 'react';
+// LightGallery CSS (load once globally)
+import 'lightgallery/css/lightgallery.css';
+import 'lightgallery/css/lg-zoom.css';
+import 'lightgallery/css/lg-thumbnail.css';
 
-export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    AOS.init({ once: true });
-  }, []);
-  return <Component {...pageProps} />
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
+    </>
+  );
 }
