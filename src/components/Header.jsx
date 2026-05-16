@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 // nav model (edit links/children as you like)
-const NAV = [
+const NAV_ITEMS = [
   { label: 'Home', href: '/' },
   {
     label: 'About',
@@ -31,16 +31,16 @@ const NAV = [
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
-  const [openSection, setOpenSection] = useState(null); // index of expanded group
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [expandedNavIndex, setExpandedNavIndex] = useState(null);
 
   // lock body scroll while menu open
   useEffect(() => {
-    document.body.classList.toggle('overflow-hidden', open);
+    document.body.classList.toggle('overflow-hidden', isMobileMenuOpen);
     return () => document.body.classList.remove('overflow-hidden');
-  }, [open]);
+  }, [isMobileMenuOpen]);
 
-  const closeMenu = () => setOpen(false);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <>
@@ -67,8 +67,8 @@ export default function Header() {
           <button
             className="ml-auto sm:hidden inline-flex items-center justify-center rounded-md p-2"
             aria-label="Open menu"
-            aria-expanded={open ? 'true' : 'false'}
-            onClick={() => setOpen(true)}
+            aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
+            onClick={() => setIsMobileMenuOpen(true)}
           >
             <Menu className="w-7 h-7 text-maroon" />
           </button>
@@ -77,69 +77,69 @@ export default function Header() {
 
       {/* Overlay + sliding drawer (mobile) */}
       <div
-        className={`fixed inset-0 z-[60] sm:hidden ${open ? '' : 'pointer-events-none'}`}
+        className={`fixed inset-0 z-[60] sm:hidden ${isMobileMenuOpen ? '' : 'pointer-events-none'}`}
       >
         {/* dim backdrop */}
         <div
-          className={`absolute inset-0 bg-black/40 transition-opacity duration-200 ${open ? 'opacity-100' : 'opacity-0'}`}
-          onClick={closeMenu}
+          className={`absolute inset-0 bg-black/40 transition-opacity duration-200 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={closeMobileMenu}
         />
 
         {/* drawer */}
         <aside
           className={`absolute left-0 top-0 h-full w-[100%] bg-white shadow-2xl
-                      transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'}`}
-          aria-hidden={!open}
+                      transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+          aria-hidden={!isMobileMenuOpen}
         >
           <div className="flex flex-col h-full">
             {/* drawer header */}
             <div className="flex items-center justify-between p-4">
-              <Link href="/" onClick={closeMenu} className="flex items-center">
+              <Link href="/" onClick={closeMobileMenu} className="flex items-center">
                 <img src="/images/logo.png" alt="Logo" className="h-16" />
               </Link>
-              <button aria-label="Close menu" onClick={closeMenu} className="p-2 text-maroon">
+              <button aria-label="Close menu" onClick={closeMobileMenu} className="p-2 text-maroon">
                 <X className="w-7 h-7" />
               </button>
             </div>
 
             {/* nav list */}
             <nav className="px-4 py-2 space-y-4 overflow-y-auto">
-              {NAV.map((item, idx) => {
-                const hasChildren = Array.isArray(item.children) && item.children.length > 0;
-                const expanded = openSection === idx;
+              {NAV_ITEMS.map((navItem, navIndex) => {
+                const hasChildren = Array.isArray(navItem.children) && navItem.children.length > 0;
+                const isExpanded = expandedNavIndex === navIndex;
 
                 return (
-                  <div key={item.label}>
+                  <div key={navItem.label}>
                     <div className="flex items-center justify-between">
                       <Link
-                        href={item.href}
-                        onClick={closeMenu}
+                        href={navItem.href}
+                        onClick={closeMobileMenu}
                         className="text-lg font-semibold"
                       >
-                        {item.label}
+                        {navItem.label}
                       </Link>
 
                       {hasChildren && (
                         <button
-                          onClick={() => setOpenSection(expanded ? null : idx)}
-                          aria-label={expanded ? 'Collapse section' : 'Expand section'}
+                          onClick={() => setExpandedNavIndex(isExpanded ? null : navIndex)}
+                          aria-label={isExpanded ? 'Collapse section' : 'Expand section'}
                           className="p-2 -mr-2"
                         >
-                          {expanded ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+                          {isExpanded ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
                         </button>
                       )}
                     </div>
 
                     {hasChildren && (
-                      <div className={`mt-2 pl-6 space-y-3 ${expanded ? 'block' : 'hidden'}`}>
-                        {item.children.map((ch) => (
+                      <div className={`mt-2 pl-6 space-y-3 ${isExpanded ? 'block' : 'hidden'}`}>
+                        {navItem.children.map((childItem) => (
                           <Link
-                            key={ch.label}
-                            href={ch.href}
-                            onClick={closeMenu}
+                            key={childItem.label}
+                            href={childItem.href}
+                            onClick={closeMobileMenu}
                             className="block uppercase tracking-wide text-gray-500"
                           >
-                            {ch.label}
+                            {childItem.label}
                           </Link>
                         ))}
                       </div>
@@ -184,7 +184,7 @@ export default function Header() {
 
               {/* <Link
                 href="/member-login"
-                onClick={closeMenu}
+                onClick={closeMobileMenu}
                 className="inline-flex items-center justify-center rounded-lg bg-[#264d99] px-5 py-3 text-white font-semibold shadow w-full"
               >
                 MEMBER LOGIN <span className="ml-2">♥</span>

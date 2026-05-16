@@ -67,11 +67,11 @@ export default function AboutPage() {
               { name: 'S. Banerjee',  role: 'General Secretary', img: '/images/committee/secretary.jpg'  },
               { name: 'R. Ghosh',     role: 'Treasurer',         img: '/images/committee/treasurer.jpg'  },
               { name: 'D. Chatterjee',role: 'Cultural Lead',     img: '/images/committee/cultural.jpg'   },
-            ].map(m => (
-              <div key={m.name} className="rounded-2xl bg-gradient-to-b from-amber-50 to-amber-100 p-5 ring-1 ring-amber-200 shadow-sm">
-                <img src={m.img} alt={m.role} className="h-40 w-full object-cover rounded-xl" />
-                <h3 className="mt-4 text-lg font-semibold">{m.name}</h3>
-                <p className="text-sm text-gray-600">{m.role}</p>
+            ].map((committeeMember) => (
+              <div key={committeeMember.name} className="rounded-2xl bg-gradient-to-b from-amber-50 to-amber-100 p-5 ring-1 ring-amber-200 shadow-sm">
+                <img src={committeeMember.img} alt={committeeMember.role} className="h-40 w-full object-cover rounded-xl" />
+                <h3 className="mt-4 text-lg font-semibold">{committeeMember.name}</h3>
+                <p className="text-sm text-gray-600">{committeeMember.role}</p>
               </div>
             ))}
           </div>

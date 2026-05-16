@@ -6,34 +6,34 @@ export default function EventsPage() {
       dateHtml: '26<sup>th</sup> Sep 2025, Friday',
       time: '6:00 PM – 10:00 PM',
       venue: 'Weston-Under-Weatherly Village Hall',
-      img: '/events/event1.jpg',
+      imageSrc: '/events/event1.jpg',
     },
     {
       title: 'Saptami & Asthami',
       dateHtml: '27<sup>th</sup> Sep 2025, Saturday',
       time: '9:00 AM – 10:00 PM',
       venue: 'Weston-Under-Weatherly Village Hall',
-      img: '/events/event2.jpg',
+      imageSrc: '/events/event2.jpg',
     },
     {
       title: 'Nabami & Dashami',
       dateHtml: '28<sup>th</sup> Sep 2025, Sunday',
       time: '9:00 AM – 6:00 PM',
       venue: 'Weston-Under-Weatherly Village Hall',
-      img: '/events/event3.jpg',
+      imageSrc: '/events/event3.jpg',
     },
   ];
 
   const programs = [
-    { title: 'Opening Ceremony & Agomoni', when: '26 Sep, 7:00 PM', img: '/images/cultural/agomoni.jpg', blurb: 'Traditional welcome with dhak, conch, and chorus.' },
-    { title: 'Children’s Cultural Showcase', when: '27 Sep, 3:30 PM', img: '/images/cultural/kids.jpg', blurb: 'Dance, music, and poetry by our young stars.' },
-    { title: 'Star Evening', when: '27 Sep, 7:30 PM', img: '/images/cultural/star-evening.jpg', blurb: 'Guest performers and community fusion band.' },
-    { title: 'Dhunchi & Sindoor Khela', when: '28 Sep, 4:00 PM', img: '/images/cultural/dhunchi.jpg', blurb: 'Traditional celebrations to bid farewell.' },
+    { title: 'Opening Ceremony & Agomoni', time: '26 Sep, 7:00 PM', imageSrc: '/images/cultural/agomoni.jpg', description: 'Traditional welcome with dhak, conch, and chorus.' },
+    { title: 'Children’s Cultural Showcase', time: '27 Sep, 3:30 PM', imageSrc: '/images/cultural/kids.jpg', description: 'Dance, music, and poetry by our young stars.' },
+    { title: 'Star Evening', time: '27 Sep, 7:30 PM', imageSrc: '/images/cultural/star-evening.jpg', description: 'Guest performers and community fusion band.' },
+    { title: 'Dhunchi & Sindoor Khela', time: '28 Sep, 4:00 PM', imageSrc: '/images/cultural/dhunchi.jpg', description: 'Traditional celebrations to bid farewell.' },
   ];
 
   const magazines = [
-    { year: '2025', cover: '/magazine/2025-cover.jpg', pdf: '/magazine/2025.pdf', blurb: 'Sharodiya 2025 — essays, poems, and memories.' },
-    { year: '2024', cover: '/magazine/2024-cover.jpg', pdf: '/magazine/2024.pdf', blurb: 'Sharodiya 2024 — a throwback to our journey.' },
+    { year: '2025', coverSrc: '/magazine/2025-cover.jpg', pdfSrc: '/magazine/2025.pdf', description: 'Sharodiya 2025 — essays, poems, and memories.' },
+    { year: '2024', coverSrc: '/magazine/2024-cover.jpg', pdfSrc: '/magazine/2024.pdf', description: 'Sharodiya 2024 — a throwback to our journey.' },
   ];
 
   return (
@@ -80,19 +80,19 @@ export default function EventsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {eventCards.map((ev) => (
-              <article key={ev.title} className="bg-gradient-to-b from-amber-50 to-amber-100 rounded-2xl ring-1 ring-amber-200 shadow-sm overflow-hidden">
+            {eventCards.map((event) => (
+              <article key={event.title} className="bg-gradient-to-b from-amber-50 to-amber-100 rounded-2xl ring-1 ring-amber-200 shadow-sm overflow-hidden">
                 <img
-                  src={ev.img}
-                  alt={ev.title}
+                  src={event.imageSrc}
+                  alt={event.title}
                   className="h-44 w-full object-cover"
                   onError={(e) => { e.currentTarget.src = '/images/placeholders/event.jpg'; }}
                 />
                 <div className="p-5">
-                  <h3 className="text-xl font-semibold text-rose-900">{ev.title}</h3>
-                  <p className="mt-1 text-gray-700" dangerouslySetInnerHTML={{ __html: ev.dateHtml }} />
-                  <p className="mt-1 text-sm text-rose-700">{ev.time}</p>
-                  <p className="mt-2 text-sm text-gray-500">{ev.venue}</p>
+                  <h3 className="text-xl font-semibold text-rose-900">{event.title}</h3>
+                  <p className="mt-1 text-gray-700" dangerouslySetInnerHTML={{ __html: event.dateHtml }} />
+                  <p className="mt-1 text-sm text-rose-700">{event.time}</p>
+                  <p className="mt-2 text-sm text-gray-500">{event.venue}</p>
                 </div>
               </article>
             ))}
@@ -109,18 +109,18 @@ export default function EventsPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {programs.map((p) => (
-              <article key={p.title} className="rounded-2xl bg-white ring-1 ring-amber-200 shadow-sm overflow-hidden">
+            {programs.map((program) => (
+              <article key={program.title} className="rounded-2xl bg-white ring-1 ring-amber-200 shadow-sm overflow-hidden">
                 <img
-                  src={p.img}
-                  alt={p.title}
+                  src={program.imageSrc}
+                  alt={program.title}
                   className="h-40 w-full object-cover"
                   onError={(e) => { e.currentTarget.src = '/images/placeholders/cultural.jpg'; }}
                 />
                 <div className="p-5">
-                  <h3 className="text-lg font-semibold text-rose-900">{p.title}</h3>
-                  <p className="mt-1 text-sm text-rose-700">{p.when}</p>
-                  <p className="mt-2 text-sm text-gray-600">{p.blurb}</p>
+                  <h3 className="text-lg font-semibold text-rose-900">{program.title}</h3>
+                  <p className="mt-1 text-sm text-rose-700">{program.time}</p>
+                  <p className="mt-2 text-sm text-gray-600">{program.description}</p>
                 </div>
               </article>
             ))}
@@ -143,20 +143,20 @@ export default function EventsPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {magazines.map((m) => (
-              <article key={m.year} className="rounded-2xl bg-gradient-to-b from-amber-50 to-amber-100 ring-1 ring-amber-200 shadow-sm overflow-hidden">
+            {magazines.map((magazine) => (
+              <article key={magazine.year} className="rounded-2xl bg-gradient-to-b from-amber-50 to-amber-100 ring-1 ring-amber-200 shadow-sm overflow-hidden">
                 <img
-                  src={m.cover}
-                  alt={`Sharodiya ${m.year} cover`}
+                  src={magazine.coverSrc}
+                  alt={`Sharodiya ${magazine.year} cover`}
                   className="h-64 w-full object-cover"
                   onError={(e) => { e.currentTarget.src = '/images/placeholders/magazine.jpg'; }}
                 />
                 <div className="p-5">
-                  <h3 className="text-xl font-semibold text-rose-900">Sharodiya {m.year}</h3>
-                  <p className="mt-2 text-sm text-gray-600">{m.blurb}</p>
+                  <h3 className="text-xl font-semibold text-rose-900">Sharodiya {magazine.year}</h3>
+                  <p className="mt-2 text-sm text-gray-600">{magazine.description}</p>
                   <div className="mt-4 flex gap-3">
                     <a
-                      href={m.pdf}
+                      href={magazine.pdfSrc}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center rounded-lg bg-rose-700 px-4 py-2 text-white text-sm font-semibold hover:bg-rose-800"
@@ -164,7 +164,7 @@ export default function EventsPage() {
                       View PDF
                     </a>
                     <a
-                      href={m.pdf}
+                      href={magazine.pdfSrc}
                       download
                       className="inline-flex items-center justify-center rounded-lg bg-amber-200 px-4 py-2 text-rose-900 text-sm font-semibold hover:bg-amber-300"
                     >
