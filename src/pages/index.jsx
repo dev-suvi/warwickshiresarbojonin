@@ -91,7 +91,7 @@ function Countdown({
   return (
     <div className="mx-auto w-full max-w-3xl">
       {/* Outer glossy card */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-rose-600 to-rose-700 p-5 sm:p-7 ring-1 ring-white/10 shadow-[0_30px_70px_-24px_rgba(0,0,0,0.25)]">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-rose-600 to-rose-700 p-5 sm:p-7 ring-1 ring-white/10 shadow-[0_30px_70px_-24px_rgba(0,0,0,0.25)]">
         {/* soft glows */}
         <div className="pointer-events-none absolute -top-24 -left-24 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-20 -right-16 h-48 w-48 rounded-full bg-black/20 blur-3xl" />
@@ -257,53 +257,52 @@ export default function Home() {
 
   return (
     <main className="text-gray-900">
-      <section className="relative min-h-[calc(100vh-88px)] overflow-hidden bg-[#efe9e1] text-white">
-        <picture>
-          <source media="(max-width: 640px)" srcSet="/images/hero-mobile.png" />
-          <img
-            src="/images/hero.png"
-            alt="Durga Puja celebration"
-            className="absolute inset-0 h-full w-full object-cover opacity-100"
-          />
-        </picture>
+      <section className="relative min-h-[calc(100vh-88px)] overflow-hidden bg-[#efe9e1] text-white sm:bg-[#efe9e1]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.5),_transparent_35%),linear-gradient(135deg,#f7efe8_0%,#f1e3d5_35%,#e9d9ca_100%)] sm:hidden" />
+        <img
+          src="/images/hero.png"
+          alt="Durga Puja celebration"
+          className="absolute inset-0 hidden h-full w-full object-cover opacity-100 sm:block"
+        />
 
-        <div className="relative mx-auto flex min-h-[calc(100vh-88px)] max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
-          <div className="max-w-5xl">
+        <div className="relative mx-auto flex min-h-[calc(100vh-88px)] max-w-6xl flex-col items-center justify-center px-4 py-10 text-center sm:px-6 sm:py-16">
+          <div className="w-full max-w-3xl sm:order-2 sm:mt-8">
+            <Countdown
+              date="2026-10-17T00:00:00"
+              title="Sharadotsav 2026"
+              subtitle="Warwickshire Sarbojonin Durga Puja Celebration Countdown"
+            />
+          </div>
+
+          <div className="mt-8 w-full max-w-5xl sm:order-1 sm:mt-0 sm:mb-8">
             <h1
-              className="text-[clamp(2.2rem,4vw,4.6rem)] font-black leading-[0.9] tracking-[-0.05em] text-rose-950 drop-shadow-[0_2px_8px_rgba(255,255,255,0.55)]"
+              className="text-[1.8rem] font-black leading-[0.95] tracking-[-0.05em] text-rose-950 drop-shadow-[0_2px_8px_rgba(255,255,255,0.55)] sm:text-[clamp(2.2rem,4vw,4.6rem)]"
             >
               <span className="block">Warwickshire Sarbojonin</span>
               <span className="mt-2 block">Sharadotsav 2026</span>
             </h1>
             <div className="mx-auto mt-6 max-w-4xl rounded-xl border border-white/30 bg-[#f4efe9]/55 px-5 py-4 shadow-[0_10px_28px_rgba(24,18,17,0.08)] backdrop-blur-[1px]">
               <p className="text-base leading-8 text-[#2d2424]/90 sm:text-lg lg:text-[1.3rem]">
-                <strong>Warwickshire Sarbojonin Sharadotsav 2026, where Maa Durgaarrives on a horse (Ghotok), bringing a burst of colour, rhythm, and community spirit. The pandal comes alive with dhaak beats, thematic decorations, joyful faces, and the warm aroma of bhog. Families, friends, and visitors from across the UK gather to celebrate culture, devotion, art, and togetherness - creating a festive atmosphere that feels both timeless and unforgettable.</strong> 
+                <strong>Warwickshire Sarbojonin Sharadotsav 2026,</strong> where <strong>Maa Durga</strong> arrives on a horse (Ghotok), bringing a burst of colour, rhythm, and community spirit. The pandal comes alive with dhaak beats, thematic decorations, joyful faces, and the warm aroma of bhog. Families, friends, and visitors from across the UK gather to celebrate culture, devotion, art, and togetherness - creating a festive atmosphere that feels both timeless and unforgettable.
               </p>
             </div>
           </div>
 
-          <div className="mt-12 w-full max-w-3xl">
-            <Countdown
-              date="2026-10-17T00:00:00"
-              title="Sharadotsav 2026"
-              subtitle="Warwickshire Sarbojonin Durga Puja Celebration Countdown"
-            />
-            <div className="mt-8 flex flex-row items-center justify-center gap-3">
-              <Link
-                href="/events"
-                className="inline-flex items-center justify-center gap-2 bg-amber-300 px-6 py-3 font-bold text-rose-950 transition hover:bg-amber-200"
-              >
-                <CalendarDays className="h-5 w-5" />
-                Events
-              </Link>
-              <Link
-                href="/location"
-                className="inline-flex items-center justify-center gap-2 border border-[#f4efe9]/80 bg-[#f4efe9]/20 px-6 py-3 font-bold text-[#1d1817] shadow-[0_8px_22px_rgba(0,0,0,0.08)] backdrop-blur-[1px] transition hover:bg-[#f4efe9]/35"
-              >
-                <MapPin className="h-5 w-5" />
-                Venue
-              </Link>
-            </div>
+          <div className="mt-8 flex w-full max-w-3xl flex-row items-center justify-center gap-3 sm:order-3 sm:mt-8">
+            <Link
+              href="/events"
+              className="inline-flex items-center justify-center gap-2 bg-amber-300 px-6 py-3 font-bold text-rose-950 transition hover:bg-amber-200"
+            >
+              <CalendarDays className="h-5 w-5" />
+              Events
+            </Link>
+            <Link
+              href="/location"
+              className="inline-flex items-center justify-center gap-2 border border-[#f4efe9]/80 bg-[#f4efe9]/20 px-6 py-3 font-bold text-[#1d1817] shadow-[0_8px_22px_rgba(0,0,0,0.08)] backdrop-blur-[1px] transition hover:bg-[#f4efe9]/35"
+            >
+              <MapPin className="h-5 w-5" />
+              Venue
+            </Link>
           </div>
         </div>
       </section>
