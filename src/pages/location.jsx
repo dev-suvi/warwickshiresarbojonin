@@ -1,19 +1,39 @@
 export default function LocationPage() {
   return (
-    <main className="bg-white">
-      <section className="py-16 px-6 bg-gray-100" data-aos="fade-up">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold">Venue</h2>
+    <main className="bg-[#f8f1ea] px-6 py-16 text-gray-900">
+      <section className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1.2fr_0.8fr]" data-aos="fade-up">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_16px_40px_rgba(0,0,0,0.06)]">
+          <h2 className="text-4xl font-extrabold text-rose-950">Venue</h2>
+          <div className="mt-6 overflow-hidden rounded-xl">
+            <iframe
+              className="h-[420px] w-full"
+              src="https://www.google.com/maps?q=Weston%20Under%20Wetherley%20Hall%2C%20Warwickshire&z=14&output=embed"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
         </div>
-        <div className="max-w-4xl mx-auto">
-          <iframe
-            className="w-full h-96 rounded shadow"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2436.4863051075876!2d-1.5528498840198492!3d52.21732727975707!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48772b1111111111%3A0xabcdef1234567890!2sWeston-Under-Weatherly%20Village%20Hall!5e0!3m2!1sen!2suk!4v1699999999999"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
+
+        <aside className="rounded-2xl bg-[#fff7f2] p-8 shadow-[0_16px_40px_rgba(0,0,0,0.08)] ring-1 ring-rose-100">
+          <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">Location details</p>
+          <h3 className="mt-3 text-3xl font-extrabold text-rose-950">Venue</h3>
+
+          <div className="mt-8 space-y-5 text-base leading-8 text-gray-700">
+            <p>
+              <span className="font-semibold text-rose-900">Weston-under-Wetherley Village Hall</span>
+            </p>
+            <p>
+              Sabin Dr, Weston under Wetherley, Leamington Spa CV33 9GA, United Kingdom
+            </p>
+            <p>
+              15 mins drive from Leamington Spa Rail Station
+            </p>
+            <p>
+              15 mins drive from Coventry Rail Station
+            </p>
+          </div>
+        </aside>
       </section>
     </main>
   );

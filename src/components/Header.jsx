@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
   Menu, X, Plus, Minus,
   Facebook, Instagram, Twitter, Youtube
@@ -8,29 +9,14 @@ import {
 // nav model (edit links/children as you like)
 const NAV_ITEMS = [
   { label: 'Home', href: '/' },
-  {
-    label: 'About',
-    href: '/about',
-    children: [
-      { label: 'Who We Are', href: '/about#who-we-are' },
-      { label: 'Committee', href: '/about#committee' },
-    ],
-  },
-  {
-    label: 'Our Events',
-    href: '/events',
-    children: [
-      { label: 'Event Calendar', href: '/events#calendar' },
-      { label: 'Cultural Programs', href: '/events#cultural' },
-      { label: 'Magazine', href: '/events#magazine' },
-    ],
-  },
-  { label: 'Culture & Collaboration', href: '/heritage' },
-  { label: 'Our Gallery', href: '/gallery' },
-  { label: 'Location Map', href: '/location' },
+  { label: 'About', href: '/about' },
+  { label: 'Events', href: '/events' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Get Involved', href: '/contact' },
 ];
 
 export default function Header() {
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedNavIndex, setExpandedNavIndex] = useState(null);
 
@@ -45,27 +31,46 @@ export default function Header() {
   return (
     <>
       {/* Top header */}
-      <header className="sticky top-0 bg-white shadow z-50">
-        <div className="max-w-6xl mx-auto flex items-center p-4">
-          <Link href="/" className="flex items-center">
-            <img src="/images/logo.png" alt="Logo" className="h-14" />
-          </Link>
-
-          <h1 className="text-xl sm:text-2xl font-bold pl-4 text-red-800">
-            Warwickshire Sarbojonin
-          </h1>
+      <header className="sticky top-0 z-50 bg-white shadow">
+        <div className="mx-auto flex max-w-6xl items-center px-4 py-2.5">
+          <div className="flex shrink-0 items-center gap-2">
+            <Link href="/" className="flex items-center">
+              <img src="/images/logo.png" alt="Logo" className="h-11 w-auto shrink-0 object-contain" />
+            </Link>
+            <div className="flex min-w-0 flex-col leading-none">
+              <h1 className="text-lg font-bold text-red-800 sm:text-xl">
+                Warwickshire Sarbojonin
+              </h1>
+              <span className="mt-0.5 text-[9px] font-semibold tracking-wide text-gray-700">
+                Registration No. : 16621105
+              </span>
+            </div>
+          </div>
 
           {/* desktop nav */}
-          <nav className="ml-auto hidden sm:flex items-center gap-6 text-sm">
-            <Link href="/">Home</Link>
-            <Link href="/about">About us</Link>
-            <Link href="/events">Events</Link>
-            <Link href="/location">Location</Link>
+          <nav className="ml-auto hidden lg:flex items-center gap-2 text-sm font-semibold">
+            {NAV_ITEMS.map((item) => {
+              const isActive = router.pathname === item.href;
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-full px-4 py-2 transition ${
+                    isActive
+                      ? 'bg-[#7a1d1d] text-white shadow-sm'
+                      : 'text-gray-700 hover:bg-[#f7eadf] hover:text-[#7a1d1d]'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* mobile hamburger */}
           <button
-            className="ml-auto sm:hidden inline-flex items-center justify-center rounded-md p-2"
+            className="ml-auto lg:hidden inline-flex items-center justify-center rounded-md p-2"
             aria-label="Open menu"
             aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
             onClick={() => setIsMobileMenuOpen(true)}
@@ -77,7 +82,7 @@ export default function Header() {
 
       {/* Overlay + sliding drawer (mobile) */}
       <div
-        className={`fixed inset-0 z-[60] sm:hidden ${isMobileMenuOpen ? '' : 'pointer-events-none'}`}
+        className={`fixed inset-0 z-[60] lg:hidden ${isMobileMenuOpen ? '' : 'pointer-events-none'}`}
       >
         {/* dim backdrop */}
         <div
@@ -94,57 +99,37 @@ export default function Header() {
           <div className="flex flex-col h-full">
             {/* drawer header */}
             <div className="flex items-center justify-between p-4">
-              <Link href="/" onClick={closeMobileMenu} className="flex items-center">
-                <img src="/images/logo.png" alt="Logo" className="h-16" />
-              </Link>
+              <div className="flex flex-col items-center shrink-0">
+                <Link href="/" onClick={closeMobileMenu} className="flex items-center">
+                  <img src="/images/logo.png" alt="Logo" className="h-16 w-auto shrink-0 object-contain" />
+                </Link>
+                <span className="mt-1 text-[10px] font-semibold tracking-wide text-gray-700">
+                  Registration No. : 16621105
+                </span>
+              </div>
               <button aria-label="Close menu" onClick={closeMobileMenu} className="p-2 text-maroon">
                 <X className="w-7 h-7" />
               </button>
             </div>
 
             {/* nav list */}
-            <nav className="px-4 py-2 space-y-4 overflow-y-auto">
-              {NAV_ITEMS.map((navItem, navIndex) => {
-                const hasChildren = Array.isArray(navItem.children) && navItem.children.length > 0;
-                const isExpanded = expandedNavIndex === navIndex;
+            <nav className="px-4 py-2 space-y-2 overflow-y-auto">
+              {NAV_ITEMS.map((navItem) => {
+                const isActive = router.pathname === navItem.href;
 
                 return (
-                  <div key={navItem.label}>
-                    <div className="flex items-center justify-between">
-                      <Link
-                        href={navItem.href}
-                        onClick={closeMobileMenu}
-                        className="text-lg font-semibold"
-                      >
-                        {navItem.label}
-                      </Link>
-
-                      {hasChildren && (
-                        <button
-                          onClick={() => setExpandedNavIndex(isExpanded ? null : navIndex)}
-                          aria-label={isExpanded ? 'Collapse section' : 'Expand section'}
-                          className="p-2 -mr-2"
-                        >
-                          {isExpanded ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-                        </button>
-                      )}
-                    </div>
-
-                    {hasChildren && (
-                      <div className={`mt-2 pl-6 space-y-3 ${isExpanded ? 'block' : 'hidden'}`}>
-                        {navItem.children.map((childItem) => (
-                          <Link
-                            key={childItem.label}
-                            href={childItem.href}
-                            onClick={closeMobileMenu}
-                            className="block uppercase tracking-wide text-gray-500"
-                          >
-                            {childItem.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <Link
+                    key={navItem.href}
+                    href={navItem.href}
+                    onClick={closeMobileMenu}
+                    className={`block rounded-xl px-4 py-3 text-base font-semibold transition ${
+                      isActive
+                        ? 'bg-[#7a1d1d] text-white'
+                        : 'text-gray-700 hover:bg-[#f7eadf] hover:text-[#7a1d1d]'
+                    }`}
+                  >
+                    {navItem.label}
+                  </Link>
                 );
               })}
             </nav>
@@ -153,14 +138,14 @@ export default function Header() {
             <div className="mt-auto p-4">
               <div className="flex items-center gap-4 mb-6">
                 <a
-                  href="https://facebook.com/yourpage"
+                  href="https://www.facebook.com/share/18Tq25NbDk/?mibextid=wwXIfr"
                   target="_blank" rel="noopener noreferrer" aria-label="Facebook"
                   className="h-12 w-12 rounded-full border border-gray-300 flex items-center justify-center"
                 >
                   <Facebook className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://instagram.com/yourhandle"
+                  href="https://www.instagram.com/warwickshiresarbojonin2025?stkn=MTBiNHBzdzRoZmw2cg=="
                   target="_blank" rel="noopener noreferrer" aria-label="Instagram"
                   className="h-12 w-12 rounded-full border border-gray-300 flex items-center justify-center"
                 >
@@ -174,21 +159,13 @@ export default function Header() {
                   <Twitter className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://youtube.com/@yourchannel"
+                  href="https://youtube.com/@warwickshiresarbojonin?feature=shared"
                   target="_blank" rel="noopener noreferrer" aria-label="YouTube"
                   className="h-12 w-12 rounded-full border border-gray-300 flex items-center justify-center"
                 >
                   <Youtube className="w-5 h-5" />
                 </a>
               </div>
-
-              {/* <Link
-                href="/member-login"
-                onClick={closeMobileMenu}
-                className="inline-flex items-center justify-center rounded-lg bg-[#264d99] px-5 py-3 text-white font-semibold shadow w-full"
-              >
-                MEMBER LOGIN <span className="ml-2">♥</span>
-              </Link> */}
             </div>
           </div>
         </aside>

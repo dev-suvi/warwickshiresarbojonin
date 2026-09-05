@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { CalendarDays, HeartHandshake, MapPin, Music, Sparkles, Users } from 'lucide-react';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
-import GalleryCarousel from '../components/GalleryCarousel';
-
-const LightGallery = dynamic(() => import('lightgallery/react').then((module) => module.default), { ssr: false });
+import { CalendarDays, HeartHandshake, MapPin, Music, Sparkles, UtensilsCrossed, Users } from 'lucide-react';
 
 const EMPTY_TIME_REMAINING = {
   days: 0,
@@ -36,13 +31,25 @@ function Countdown({
   const [timeRemaining, setTimeRemaining] = useState(EMPTY_TIME_REMAINING);
   const previousTimeRemaining = useRef(timeRemaining);
   const [changedUnits, setChangedUnits] = useState(UNCHANGED_TIME_UNITS);
+  const [isCountdownComplete, setIsCountdownComplete] = useState(false);
 
   useEffect(() => {
     let resetAnimationTimeoutId;
+    let intervalId;
 
     const update = () => {
       const now = new Date();
-      const millisecondsRemaining = Math.max(0, target - now);
+      const millisecondsRemaining = target - now;
+
+      if (millisecondsRemaining <= 0) {
+        clearInterval(intervalId);
+        setTimeRemaining(EMPTY_TIME_REMAINING);
+        setIsCountdownComplete(true);
+        setChangedUnits(UNCHANGED_TIME_UNITS);
+        return;
+      }
+
+      setIsCountdownComplete(false);
       const nextTimeRemaining = {
         days: Math.floor(millisecondsRemaining / (1000 * 60 * 60 * 24)),
         hours: Math.floor((millisecondsRemaining / (1000 * 60 * 60)) % 24),
@@ -65,7 +72,7 @@ function Countdown({
     };
 
     update();
-    const intervalId = setInterval(update, 1000);
+    intervalId = setInterval(update, 1000);
     return () => {
       clearInterval(intervalId);
       clearTimeout(resetAnimationTimeoutId);
@@ -79,7 +86,7 @@ function Countdown({
     { key: 'seconds', label: 'Second(s)', value: padTimeUnit(timeRemaining.seconds) },
   ];
 
-  const isCountdownComplete = Object.values(timeRemaining).every((value) => value === 0);
+  const isFinished = isCountdownComplete || Object.values(timeRemaining).every((value) => value === 0);
 
   return (
     <div className="mx-auto w-full max-w-3xl">
@@ -100,7 +107,7 @@ function Countdown({
         </div>
 
         {/* tiles */}
-        {!isCountdownComplete ? (
+        {!isFinished ? (
           <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {countdownUnits.map((unit) => (
               <div
@@ -139,119 +146,209 @@ function Countdown({
 }
 
 export default function Home() {
+  const [selectedGalleryIndex, setSelectedGalleryIndex] = useState(null);
+  const [galleryStartIndex, setGalleryStartIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const updateViewport = () => setIsMobile(window.innerWidth < 640);
+    updateViewport();
+    window.addEventListener('resize', updateViewport);
+    return () => window.removeEventListener('resize', updateViewport);
+  }, []);
+
   const galleryImages = [
-    '/gallery/image-1.png','/gallery/image-2.png','/gallery/image-3.png',
-    '/gallery/image-4.png','/gallery/image-5.png','/gallery/image-6.png'
+    '/moments-from-the-celebration/542206550_122121418196955683_2898216149024399995_n.jpg',
+    '/moments-from-the-celebration/547783223_122122906028955683_8460085079632912176_n.jpg',
+    '/moments-from-the-celebration/548289947_122122909088955683_955951197977458953_n.jpg',
+    '/moments-from-the-celebration/550772231_122125043252955683_5988397150487800803_n.jpg',
+    '/moments-from-the-celebration/555670524_122126579612955683_6330195085308319756_n.jpg',
+    '/moments-from-the-celebration/555739909_122127154190955683_3719518204172971372_n.jpg',
+    '/moments-from-the-celebration/555945456_122126552654955683_382617406411383753_n.jpg',
+    '/moments-from-the-celebration/557160857_122127555362955683_6453656724524839274_n.jpg',
+    '/moments-from-the-celebration/557195670_122127584396955683_4840168155767066485_n.jpg',
+    '/moments-from-the-celebration/557231741_122127296684955683_7512357231767573659_n.jpg',
+    '/moments-from-the-celebration/557579661_122127559478955683_8326388880435688778_n.jpg',
+    '/moments-from-the-celebration/558166353_122127558782955683_8739034321998892728_n.jpg',
+    '/moments-from-the-celebration/559948246_122129799800955683_6321886016377943709_n.jpg',
   ];
 
+  const visibleGalleryImages = Array.from({ length: isMobile ? 1 : 4 }, (_, offset) => {
+    const index = (galleryStartIndex + offset) % galleryImages.length;
+    return { image: galleryImages[index], index };
+  });
+
+  const goToPreviousGalleryImage = () =>
+    setSelectedGalleryIndex((currentIndex) => {
+      if (currentIndex === null) return 0;
+      return (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+    });
+
+  const goToNextGalleryImage = () =>
+    setSelectedGalleryIndex((currentIndex) => {
+      if (currentIndex === null) return 0;
+      return (currentIndex + 1) % galleryImages.length;
+    });
+
+  const goToPreviousGallerySlide = () => {
+    setGalleryStartIndex((currentIndex) => (currentIndex === 0 ? galleryImages.length - 1 : currentIndex - 1));
+  };
+
+  const goToNextGallerySlide = () => {
+    setGalleryStartIndex((currentIndex) => (currentIndex + 1) % galleryImages.length);
+  };
+
+  useEffect(() => {
+    const autoRotateId = setInterval(() => {
+      setGalleryStartIndex((currentIndex) => (currentIndex + 1) % galleryImages.length);
+    }, 4000);
+
+    return () => clearInterval(autoRotateId);
+  }, [galleryImages.length]);
+
+  useEffect(() => {
+    if (selectedGalleryIndex === null) return undefined;
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setSelectedGalleryIndex(null);
+      }
+      if (event.key === 'ArrowLeft') {
+        goToPreviousGalleryImage();
+      }
+      if (event.key === 'ArrowRight') {
+        goToNextGalleryImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedGalleryIndex, galleryImages.length]);
+
   const eventCards = [
-    { title: 'Sasthi', dateHtml: '26<sup>th</sup> Sep 2025, Friday', imageSrc: '/events/event1.jpg' },
-    { title: 'Saptami & Asthami', dateHtml: '27<sup>th</sup> Sep 2025, Saturday', imageSrc: '/events/event2.jpg' },
-    { title: 'Nabami & Dashami', dateHtml: '28<sup>th</sup> Sep 2025, Sunday', imageSrc: '/events/event3.jpg' },
+    { title: 'Sasthi', dateHtml: '16<sup>th</sup> Oct 2026, Friday', imageSrc: '/events/event1.jpg' },
+    { title: 'Saptami', dateHtml: '17<sup>th</sup> Oct 2026, Saturday', imageSrc: '/events/event2.jpg' },
+    { title: 'Ashtami', dateHtml: '18<sup>th</sup> Oct 2026, Sunday', imageSrc: '/events/event3.jpg' },
+    { title: 'Nabomi & Dashami', dateHtml: '18<sup>th</sup> Oct 2026, Sunday', imageSrc: '/events/event4.jpg' },
   ];
 
   const festivalHighlights = [
     {
       title: 'Puja & Rituals',
-      description: 'Traditional worship, anjali, arati, dhunuchi moments, and shared devotion across the festival days.',
+      description: 'Traditional Worship, Arati, Pushpanjali moments, shared devotion across all festive days.',
       icon: Sparkles,
     },
     {
-      title: 'Cultural Stage',
-      description: 'Music, dance, recitation, children’s performances, and community-led creative programs.',
+      title: 'Art, Music & Culture',
+      description: 'Creative Art, thematic décor, handcrafted idol, music, adda and a pandal brought to life through colour, imagination, and community effort.',
       icon: Music,
     },
     {
-      title: 'Community Table',
-      description: 'Warm hospitality, familiar food, new friendships, and a welcoming space for every generation.',
+      title: 'Bhog & Food',
+      description: 'Aromatic bhog, typical Indian street food, traditional flavours, and the joy of sharing food that brings the community together.',
+      icon: UtensilsCrossed,
+    },
+    {
+      title: 'Community Connection',
+      description: 'Warm welcomes, shared smiles, collective effort, and a community that comes together as one—strengthening bonds through every moment of the festival.',
       icon: Users,
     },
   ];
 
   return (
     <main className="text-gray-900">
-      <section className="relative min-h-[calc(100vh-88px)] overflow-hidden bg-black text-white">
+      <section className="relative min-h-[calc(100vh-88px)] overflow-hidden bg-[#efe9e1] text-white">
         <picture>
           <source media="(max-width: 640px)" srcSet="/images/hero-mobile.png" />
           <img
             src="/images/hero.png"
             alt="Durga Puja celebration"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 h-full w-full object-cover opacity-100"
           />
         </picture>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(20,6,6,0.86)_0%,rgba(20,6,6,0.58)_45%,rgba(20,6,6,0.18)_100%)]" />
 
-        <div className="relative mx-auto flex min-h-[calc(100vh-88px)] max-w-6xl flex-col justify-center px-6 py-16">
-          <div className="max-w-3xl">
-            <p className="mb-4 inline-flex items-center gap-2 bg-amber-300 px-4 py-2 text-sm font-bold uppercase tracking-[0.24em] text-rose-950">
-              <Sparkles className="h-4 w-4" />
-              Warwickshire Durga Puja
-            </p>
-            <h1 className="text-5xl font-extrabold leading-[1.02] sm:text-6xl lg:text-7xl">
-              Warwickshire Sarbojonin
+        <div className="relative mx-auto flex min-h-[calc(100vh-88px)] max-w-6xl flex-col items-center justify-center px-6 py-16 text-center">
+          <div className="max-w-5xl">
+            <h1
+              className="text-[clamp(2.2rem,4vw,4.6rem)] font-black leading-[0.9] tracking-[-0.05em] text-rose-950 drop-shadow-[0_2px_8px_rgba(255,255,255,0.55)]"
+            >
+              <span className="block">Warwickshire Sarbojonin</span>
+              <span className="mt-2 block">Sharadotsav 2026</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 sm:text-xl">
-              A vibrant community celebration of Durga Puja, Indian culture, food, music, arts, and togetherness in Warwickshire.
-            </p>
+            <div className="mx-auto mt-6 max-w-4xl rounded-xl border border-white/30 bg-[#f4efe9]/55 px-5 py-4 shadow-[0_10px_28px_rgba(24,18,17,0.08)] backdrop-blur-[1px]">
+              <p className="text-base leading-8 text-[#2d2424]/90 sm:text-lg lg:text-[1.3rem]">
+                <strong>Warwickshire Sarbojonin Sharadotsav 2026,</strong> where <strong>Maa Durga</strong> arrives on a horse (Ghotok), bringing a burst of colour, rhythm, and community spirit. The pandal comes alive with dhaak beats, thematic decorations, joyful faces, and the warm aroma of bhog. Families, friends, and visitors from across the UK gather to celebrate culture, devotion, art, and togetherness - creating a festive atmosphere that feels both timeless and unforgettable.
+              </p>
+            </div>
+          </div>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-12 w-full max-w-3xl">
+            <Countdown
+              date="2026-10-17T00:00:00"
+              title="Sharadotsav 2026"
+              subtitle="Warwickshire Sarbojonin Durga Puja Celebration Countdown"
+            />
+            <div className="mt-8 flex flex-row items-center justify-center gap-3">
               <Link
                 href="/events"
                 className="inline-flex items-center justify-center gap-2 bg-amber-300 px-6 py-3 font-bold text-rose-950 transition hover:bg-amber-200"
               >
                 <CalendarDays className="h-5 w-5" />
-                View Events
+                Events
               </Link>
               <Link
                 href="/location"
-                className="inline-flex items-center justify-center gap-2 border border-white/70 px-6 py-3 font-bold text-white transition hover:bg-white hover:text-rose-950"
+                className="inline-flex items-center justify-center gap-2 border border-[#f4efe9]/80 bg-[#f4efe9]/20 px-6 py-3 font-bold text-[#1d1817] shadow-[0_8px_22px_rgba(0,0,0,0.08)] backdrop-blur-[1px] transition hover:bg-[#f4efe9]/35"
               >
                 <MapPin className="h-5 w-5" />
-                Find Venue
+                Venue
               </Link>
             </div>
-          </div>
-
-          <div className="mt-12 max-w-3xl">
-            <Countdown
-              date="2026-10-17T00:00:00"
-              title="Sharadotsav 2026"
-              subtitle="Warwickshire Durga Puja celebration countdown"
-            />
           </div>
         </div>
       </section>
 
-      <section className="bg-amber-50 px-6 py-16">
+      <section className="bg-amber-50 px-6 py-10">
         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">About the community</p>
-            <h2 className="mt-3 text-4xl font-extrabold text-rose-950">Culture, devotion, and belonging under one roof.</h2>
+            <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">About Warwickshire Sarbojonin</p>
+            <h2
+              className="mt-3 text-4xl font-extrabold text-rose-950"
+            >
+              A vibrant socio-cultural forum
+            </h2>
             <p className="mt-5 text-lg leading-8 text-gray-700">
-              <strong>Warwickshire Sarbojonin</strong> promotes and preserves Indian heritage through festivals,
-              performing arts, music, dance, visual arts, and community celebrations. The spirit is simple:
-              everyone is welcome, every family has a place, and every celebration carries a little piece of home.
+              <strong>Warwickshire Sarbojonin</strong> is a young and vibrant Indian cultural organisation dedicated to bringing the essence of Indian heritage to the heart of Warwickshire.<br/> <br/>Founded with the desire to create a local cultural home, it celebrates tradition, fosters unity, and strengthens the sense of belonging within the diaspora. Committed to meaningful, hands-on preservation of heritage, the organisation creates immersive experiences that honour age-old customs while engaging the modern community. <br/> <br/>Looking ahead, Warwickshire Sarbojonin aims to grow into a long-term cultural hub—nurturing traditions, inspiring future generations, and deepening social connections across the expanding Indian community in Warwickshire.
             </p>
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="border-l-4 border-rose-700 bg-white p-5 shadow-sm">
+              <div className="border-l-4 border-rose-700 bg-white p-4 shadow-sm">
                 <p className="text-3xl font-extrabold text-rose-800">3</p>
-                <p className="mt-1 text-sm font-semibold text-gray-600">Festival Days</p>
+                <p className="mt-1 text-sm font-semibold text-gray-600">Days Celebration</p>
               </div>
-              <div className="border-l-4 border-amber-500 bg-white p-5 shadow-sm">
+              <div className="border-l-4 border-amber-500 bg-white p-4 shadow-sm">
                 <p className="text-3xl font-extrabold text-rose-800">All</p>
-                <p className="mt-1 text-sm font-semibold text-gray-600">Ages Welcome</p>
+                <p className="mt-1 text-sm font-semibold text-gray-600">Community Welcome</p>
               </div>
-              <div className="border-l-4 border-rose-700 bg-white p-5 shadow-sm">
-                <p className="text-3xl font-extrabold text-rose-800">UK</p>
-                <p className="mt-1 text-sm font-semibold text-gray-600">Community Spirit</p>
+              <div className="border-l-4 border-rose-700 bg-white p-4 shadow-sm">
+                <p className="text-3xl font-extrabold text-rose-800">Festival</p>
+                <div className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-gray-600">
+                  <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-rose-700" />
+                  <span className="whitespace-nowrap">Dhaak</span>
+                  <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-rose-700" />
+                  <span className="whitespace-nowrap">Dance</span>
+                  <span className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-rose-700" />
+                  <span className="whitespace-nowrap">Bhog</span>
+                </div>
               </div>
             </div>
           </div>
-          <img
-            src="/images/about-us.png"
-            alt="Warwickshire Sarbojonin community gathering"
-            className="h-full max-h-[520px] w-full object-cover shadow-xl"
-          />
+          <div className="hidden lg:block">
+            <img
+              src="/images/about-us.png"
+              alt="Warwickshire Sarbojonin community gathering"
+              className="w-full object-contain object-left"
+            />
+          </div>
         </div>
       </section>
 
@@ -259,10 +356,10 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">Festival experience</p>
-            <h2 className="mt-3 text-4xl font-extrabold text-rose-950">Everything that makes Puja feel alive.</h2>
+            <h2 className="mt-3 text-4xl font-extrabold text-rose-950">Everything that makes Puja feel alive</h2>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {festivalHighlights.map((highlight) => {
               const HighlightIcon = highlight.icon;
 
@@ -280,18 +377,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-rose-950 px-6 py-16 text-white">
+      <section className="bg-[#f6e9dc] px-6 py-16 text-[#2b1117]">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.22em] text-amber-300">Festival days</p>
-              <h2 className="mt-3 text-4xl font-extrabold">Sharadotsav highlights</h2>
-              <p className="mt-4 max-w-2xl text-white/75">
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">Festival days</p>
+              <h2 className="mt-3 text-4xl font-extrabold text-rose-950">Sharadotsav highlights</h2>
+              <p className="mt-4 max-w-2xl text-[#4b2a2a]/80">
                 Three days of worship, cultural programs, food, friendship, and festive memories.
               </p>
             </div>
             <Link
-              href="/events"
+              href="/events/programme-schedule"
               className="inline-flex items-center justify-center gap-2 bg-amber-300 px-5 py-3 font-bold text-rose-950 transition hover:bg-amber-200"
             >
               <CalendarDays className="h-5 w-5" />
@@ -299,9 +396,9 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
           {eventCards.map((event) => (
-            <article key={event.title} className="overflow-hidden bg-white text-gray-900 shadow-lg">
+            <article key={event.title} className="overflow-hidden rounded-2xl bg-white text-gray-900 shadow-[0_12px_28px_rgba(94,20,33,0.08)] ring-1 ring-rose-100">
               <img src={event.imageSrc} alt={event.title} className="h-56 w-full object-cover" />
               <div className="p-6">
                 <h3 className="text-2xl font-extrabold text-rose-950">{event.title}</h3>
@@ -313,50 +410,102 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white px-6 py-16">
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">Venue</p>
-            <h2 className="mt-3 text-4xl font-extrabold text-rose-950">Celebrate with us in Warwickshire.</h2>
-            <p className="mt-5 text-lg leading-8 text-gray-700">
-              Join the community at Weston-Under-Weatherly Village Hall for a warm, family-friendly Durga Puja
-              celebration shaped by devotion, art, and shared memories.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/location"
-                className="inline-flex items-center justify-center gap-2 bg-rose-700 px-6 py-3 font-bold text-white transition hover:bg-rose-800"
-              >
-                <MapPin className="h-5 w-5" />
-                See Location
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 border border-rose-700 px-6 py-3 font-bold text-rose-800 transition hover:bg-rose-50"
-              >
-                <HeartHandshake className="h-5 w-5" />
-                Get Involved
-              </Link>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <img src="/gallery/image-1.png" alt="Durga Puja gallery moment" className="h-72 w-full object-cover shadow-md" />
-            <img src="/gallery/image-3.png" alt="Festival decoration" className="mt-10 h-72 w-full object-cover shadow-md" />
-          </div>
-        </div>
-      </section>
-
       <section className="bg-amber-50 px-6 py-16">
         <div className="mx-auto mb-10 max-w-6xl text-center">
           <p className="text-sm font-bold uppercase tracking-[0.22em] text-rose-700">Gallery</p>
           <h2 className="mt-3 text-4xl font-extrabold text-rose-950">Moments from the celebration</h2>
         </div>
-        <div className="mx-auto max-w-6xl">
-          <LightGallery speed={500} plugins={[lgThumbnail, lgZoom]}>
-            <GalleryCarousel images={galleryImages} />
-          </LightGallery>
+
+        <div className="relative mx-auto max-w-6xl">
+          <button
+            type="button"
+            aria-label="Previous gallery"
+            onClick={goToPreviousGallerySlide}
+            className="absolute -left-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-rose-900 text-2xl text-white shadow-lg md:-left-5"
+          >
+            ‹
+          </button>
+
+          <button
+            type="button"
+            aria-label="Next gallery"
+            onClick={goToNextGallerySlide}
+            className="absolute -right-2 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-rose-900 text-2xl text-white shadow-lg md:-right-5"
+          >
+            ›
+          </button>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {visibleGalleryImages.map(({ image, index }) => (
+              <button
+                key={`${image}-${index}`}
+                type="button"
+                onClick={() => setSelectedGalleryIndex(index)}
+                className="group overflow-hidden rounded-xl border border-rose-100 bg-[#f7f2ee] shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                aria-label={`Open gallery image ${index + 1}`}
+              >
+                <img
+                  src={image}
+                  alt={`Celebration moment ${index + 1}`}
+                  className="h-52 w-full object-contain transition duration-300 group-hover:scale-[1.02]"
+                />
+              </button>
+            ))}
+          </div>
         </div>
       </section>
+
+      {selectedGalleryIndex !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          onClick={() => setSelectedGalleryIndex(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative w-full max-w-6xl" onClick={(event) => event.stopPropagation()}>
+            <button
+              type="button"
+              aria-label="Close gallery"
+              onClick={() => setSelectedGalleryIndex(null)}
+              className="absolute -top-3 right-0 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-2xl font-semibold text-[#4f1022] shadow-lg"
+            >
+              ×
+            </button>
+
+            <div className="relative flex items-center justify-center">
+              <button
+                type="button"
+                aria-label="Previous image"
+                onClick={goToPreviousGalleryImage}
+                className="absolute left-3 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-3xl text-[#4f1022] shadow-lg"
+              >
+                ‹
+              </button>
+
+              <img
+                src={galleryImages[selectedGalleryIndex]}
+                alt={`Celebration moment ${selectedGalleryIndex + 1}`}
+                className="max-h-[80vh] w-full rounded-2xl object-contain shadow-2xl"
+              />
+
+              <button
+                type="button"
+                aria-label="Next image"
+                onClick={goToNextGalleryImage}
+                className="absolute right-3 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-3xl text-[#4f1022] shadow-lg"
+              >
+                ›
+              </button>
+            </div>
+
+            <div className="mt-4 flex items-center justify-center gap-3 text-sm text-white/90">
+              <span>{selectedGalleryIndex + 1}</span>
+              <span>/</span>
+              <span>{galleryImages.length}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

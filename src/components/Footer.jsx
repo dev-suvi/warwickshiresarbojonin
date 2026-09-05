@@ -14,10 +14,10 @@ export default function Footer() {
           <span className="opacity-40">|</span>
           <Link href="/privacy" className="hover:text-[#f3d4a1] transition">Privacy Policy</Link>
           <span className="opacity-40">|</span> */}
-          <Link href="/location" className="hover:text-[#f3d4a1] transition">Location</Link>
+          {/* <Link href="/location" className="hover:text-[#f3d4a1] transition">Location</Link>
           <span className="opacity-40">|</span>
           <Link href="/contact" className="hover:text-[#f3d4a1] transition">Contact Us</Link>
-          {/* <span className="opacity-40">|</span> */}
+          <span className="opacity-40">|</span> */}
           {/* <Link href="/member-login" className="hover:text-[#f3d4a1] transition">Member Login</Link>
           <span className="opacity-40">|</span>
           <Link href="/join" className="hover:text-[#f3d4a1] transition">Join our family</Link> */}
@@ -25,22 +25,17 @@ export default function Footer() {
 
         {/* Social icons in outlined circles */}
         <div className="mt-6 flex items-center gap-6">
-          <a href="https://facebook.com/yourpage" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.facebook.com/share/18Tq25NbDk/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
              aria-label="Facebook"
              className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
             <Facebook className="h-6 w-6" />
           </a>
-          <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.instagram.com/warwickshiresarbojonin2025?stkn=MTBiNHBzdzRoZmw2cg==" target="_blank" rel="noopener noreferrer"
              aria-label="Instagram"
              className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
             <Instagram className="h-6 w-6" />
           </a>
-          <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer"
-             aria-label="Twitter"
-             className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
-            <Twitter className="h-6 w-6" />
-          </a>
-          <a href="https://youtube.com/@yourchannel" target="_blank" rel="noopener noreferrer"
+          <a href="https://youtube.com/@warwickshiresarbojonin?feature=shared" target="_blank" rel="noopener noreferrer"
              aria-label="YouTube"
              className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
             <Youtube className="h-6 w-6" />

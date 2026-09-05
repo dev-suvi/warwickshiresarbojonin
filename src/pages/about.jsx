@@ -3,11 +3,11 @@ export default function AboutPage() {
   return (
     <main className="text-gray-800">
       {/* Hero */}
-      <section className="bg-gradient-to-b from-rose-600 to-rose-700 text-white">
+      <section className="bg-gradient-to-br from-[#5d0b1f] via-[#7c1830] to-[#c15a46] text-white">
         <div className="max-w-6xl mx-auto px-6 py-14 sm:py-20 text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold">About Us</h1>
-          <p className="mt-3 text-lg text-white/90">
-            Celebrating culture, community, and togetherness in Warwickshire.
+          <h1 className="mt-4 text-4xl sm:text-5xl font-black">About Warwickshire Sarbojonin</h1>
+          <p className="mt-4 max-w-2xl mx-auto text-base text-rose-50/90 sm:text-lg">
+            A vibrant socio-cultural forum and open platform rooted in the heart of Warwickshire.
           </p>
 
           {/* In-page quick links */}
@@ -15,8 +15,8 @@ export default function AboutPage() {
             <a href="#who-we-are" className="rounded-full bg-white/10 px-5 py-2 text-sm font-semibold hover:bg-white/20">
               Who We Are
             </a>
-            <a href="#committee" className="rounded-full bg-white/10 px-5 py-2 text-sm font-semibold hover:bg-white/20">
-              Committee
+            <a href="#objective" className="rounded-full bg-white/10 px-5 py-2 text-sm font-semibold hover:bg-white/20">
+              Objective
             </a>
           </div>
         </div>
@@ -29,21 +29,17 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold text-rose-900">Who We Are</h2>
               <p className="mt-4 leading-relaxed">
-                <strong>Warwickshire Sarbojonin</strong> is a community-led cultural association dedicated to
-                celebrating the richness of Indian heritage through festivals, arts, and social initiatives.
-                We bring families, friends, and well-wishers together to create meaningful experiences—
-                from Durga Puja and cultural programs to charity drives and kids’ workshops.
+                <strong>Warwickshire Sarbojonin</strong> is a young and vibrant Indian Cultural Organisation formed in 2025 with the vision of bringing the essence of Indian culture and heritage to the heart of Warwickshire, United Kingdom. Founded by 12 enthusiastic Bengali families, the organisation was born out of a shared desire to create a local cultural home - one that celebrates tradition, fosters unity, and strengthens the sense of belonging among the diaspora community. What truly sets Warwickshire Sarbojonin apart is its commitment to preserving heritage in meaningful, hands-on ways. The organisation strives to create immersive cultural experiences that honour age-old traditions while engaging the modern Indian community in the region.
               </p>
               <p className="mt-4 leading-relaxed">
-                Our mission is simple: <em>inclusion, continuity, and joy</em>. We welcome everyone to participate,
-                volunteer, and help shape a vibrant space for the community in Warwickshire and beyond.
+                Looking ahead, Warwickshire Sarbojonin aims to grow as a long-term cultural hub - nurturing traditions, inspiring future generations, and strengthening social connections among the expanding Indian community in Warwickshire.
               </p>
             </div>
 
             {/* Image */}
             <div className="relative">
               <img
-                src="/images/about/celebration.jpg"
+                src="/images/about/who-we-are.jpg"
                 alt="Community celebrating together"
                 className="w-full rounded-3xl shadow-xl ring-1 ring-black/5 object-cover"
               />
@@ -53,33 +49,29 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Committee */}
-      <section id="committee" className="scroll-mt-24 bg-white">
+      {/* Objective */}
+       <section id="objective" className="scroll-mt-24">
         <div className="max-w-6xl mx-auto px-6 py-14 sm:py-20">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-rose-900">Committee</h2>
-            <p className="mt-2 text-gray-600">Meet the team that keeps everything running smoothly.</p>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-rose-900">Objective</h2>
+              <p className="mt-4 leading-relaxed">
+               The objective of Warwickshire Sarbojonin is to promote and preserve the rich cultural heritage of India by curating meaningful artistic and community-led experiences. Through performing arts, music, dance, visual arts, and festive celebrations, the organisation seeks to foster cultural awareness, appreciation, and pride among people of all backgrounds.
+              </p>
+              <p className="mt-4 leading-relaxed">
+                Warwickshire Sarbojonin is committed to supporting artists, nurturing creative expression, and delivering educational initiatives that engage, inspire, and enrich the wider UK community. In doing so, it aims to serve as a vibrant cultural hub— strengthening connections, celebrating diversity, and ensuring that India’s timeless traditions continue to flourish for future generations.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { name: 'A. Mukherjee', role: 'President',         img: '/images/committee/president.jpg'  },
-              { name: 'S. Banerjee',  role: 'General Secretary', img: '/images/committee/secretary.jpg'  },
-              { name: 'R. Ghosh',     role: 'Treasurer',         img: '/images/committee/treasurer.jpg'  },
-              { name: 'D. Chatterjee',role: 'Cultural Lead',     img: '/images/committee/cultural.jpg'   },
-            ].map((committeeMember) => (
-              <div key={committeeMember.name} className="rounded-2xl bg-gradient-to-b from-amber-50 to-amber-100 p-5 ring-1 ring-amber-200 shadow-sm">
-                <img src={committeeMember.img} alt={committeeMember.role} className="h-40 w-full object-cover rounded-xl" />
-                <h3 className="mt-4 text-lg font-semibold">{committeeMember.name}</h3>
-                <p className="text-sm text-gray-600">{committeeMember.role}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 max-w-3xl mx-auto text-center text-gray-600">
-            We are supported by passionate volunteers who help with logistics, decorations, hospitality,
-            and cultural programming. Want to contribute?{' '}
-            <a href="/contact" className="text-rose-700 font-semibold hover:underline">Get in touch</a>.
+            {/* Image */}
+            <div className="relative">
+              <img
+                src="/images/about/objective.jpg"
+                alt="Community celebrating together"
+                className="w-full rounded-3xl shadow-xl ring-1 ring-black/5 object-cover"
+              />
+              <div className="pointer-events-none absolute -z-10 -bottom-6 -right-6 h-40 w-40 rounded-full bg-amber-200/70 blur-2xl"></div>
+            </div>
           </div>
         </div>
       </section>
