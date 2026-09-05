@@ -277,7 +277,7 @@ export default function Home() {
             </h1>
             <div className="mx-auto mt-6 max-w-4xl rounded-xl border border-white/30 bg-[#f4efe9]/55 px-5 py-4 shadow-[0_10px_28px_rgba(24,18,17,0.08)] backdrop-blur-[1px]">
               <p className="text-base leading-8 text-[#2d2424]/90 sm:text-lg lg:text-[1.3rem]">
-                <strong>Warwickshire Sarbojonin Sharadotsav 2026,</strong> where <strong>Maa Durga</strong> arrives on a horse (Ghotok), bringing a burst of colour, rhythm, and community spirit. The pandal comes alive with dhaak beats, thematic decorations, joyful faces, and the warm aroma of bhog. Families, friends, and visitors from across the UK gather to celebrate culture, devotion, art, and togetherness - creating a festive atmosphere that feels both timeless and unforgettable.
+                <strong>Warwickshire Sarbojonin Sharadotsav 2026, where Maa Durgaarrives on a horse (Ghotok), bringing a burst of colour, rhythm, and community spirit. The pandal comes alive with dhaak beats, thematic decorations, joyful faces, and the warm aroma of bhog. Families, friends, and visitors from across the UK gather to celebrate culture, devotion, art, and togetherness - creating a festive atmosphere that feels both timeless and unforgettable.</strong> 
               </p>
             </div>
           </div>

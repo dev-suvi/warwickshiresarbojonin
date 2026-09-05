@@ -29,7 +29,13 @@ export default function ContactPage() {
           <p className="mt-4 text-lg leading-8 text-gray-700">
               We would love to hear from you. If you want to volunteer, participate, or simply connect with the community, please send us a message below.
           </p>
-          <form className="mt-6 space-y-4" name="contact" method="POST" data-netlify="true">
+          <form
+            className="mt-6 space-y-4"
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            action="mailto:warwickshiresarbojonin@gmail.com?subject=New%20Contact%20Form%20Submission"
+          >
             <input type="hidden" name="form-name" value="contact" />
             <input className="w-full border border-rose-200 bg-[#fffaf7] px-4 py-3 rounded-lg focus:border-rose-500 focus:outline-none" type="text" name="name" placeholder="Your Name" required />
             <input className="w-full border border-rose-200 bg-[#fffaf7] px-4 py-3 rounded-lg focus:border-rose-500 focus:outline-none" type="tel" name="mobile" placeholder="Mobile Number" required />
