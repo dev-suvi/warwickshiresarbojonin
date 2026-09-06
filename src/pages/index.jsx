@@ -260,6 +260,12 @@ export default function Home() {
       <section className="relative min-h-[calc(100vh-88px)] overflow-hidden bg-[#efe9e1] text-white sm:bg-[#efe9e1]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.5),_transparent_35%),linear-gradient(135deg,#f7efe8_0%,#f1e3d5_35%,#e9d9ca_100%)] sm:hidden" />
         <img
+          src="/images/hero-mobile.png"
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-[28rem] h-[62%] w-full object-contain opacity-60 sm:hidden"
+        />
+        <img
           src="/images/hero.png"
           alt="Durga Puja celebration"
           className="absolute inset-0 hidden h-full w-full object-cover opacity-100 sm:block"
@@ -281,8 +287,8 @@ export default function Home() {
               <span className="block">Warwickshire Sarbojonin</span>
               <span className="mt-2 block">Sharadotsav 2026</span>
             </h1>
-            <div className="mx-auto mt-6 max-w-4xl rounded-xl border border-white/30 bg-[#f4efe9]/55 px-5 py-4 shadow-[0_10px_28px_rgba(24,18,17,0.08)] backdrop-blur-[1px]">
-              <p className="text-base leading-8 text-[#2d2424]/90 sm:text-lg lg:text-[1.3rem]">
+            <div className="mx-auto mt-6 max-w-4xl rounded-xl border border-white/30 bg-[#f4efe9]/75 px-5 py-4 shadow-[0_10px_28px_rgba(24,18,17,0.08)] backdrop-blur-[1px]">
+              <p className="text-base font-medium leading-8 text-[#2d2424]/90 sm:text-lg lg:text-[1.3rem]">
                 <strong>Warwickshire Sarbojonin Sharadotsav 2026,</strong> where <strong>Maa Durga</strong> arrives on a horse (Ghotok), bringing a burst of colour, rhythm, and community spirit. The pandal comes alive with dhaak beats, thematic decorations, joyful faces, and the warm aroma of bhog. Families, friends, and visitors from across the UK gather to celebrate culture, devotion, art, and togetherness - creating a festive atmosphere that feels both timeless and unforgettable.
               </p>
             </div>

@@ -50,25 +50,62 @@ export default function ContactPage() {
 
           <div className="mt-8 space-y-6">
             {contacts.map((person) => (
-              <div key={person.name} className="rounded-xl border border-rose-100 bg-white p-4 shadow-sm">
+              <div key={person.name} className="flex flex-wrap items-center gap-x-4 gap-y-3 rounded-xl border border-rose-100 bg-white p-4 shadow-sm sm:flex-nowrap">
                 <p className="text-lg font-semibold text-rose-900">{person.name}</p>
-                <p className="mt-2 text-base text-gray-700">{person.phone}</p>
+                <p className="text-base text-gray-700">{person.phone}</p>
                 <a
                   href={`https://wa.me/${person.whatsapp}?text=Hello%20${encodeURIComponent(person.name)},%20I%20want%20to%20get%20in%20touch.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 inline-flex items-center rounded-full bg-[#25D366] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#1ebe5b]"
+                  className="inline-flex items-center rounded-full bg-[#25D366] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#1ebe5b]"
                 >
                   WhatsApp
                 </a>
               </div>
             ))}
 
-            <div className="rounded-xl border border-rose-100 bg-white p-4 shadow-sm">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-xl border border-rose-100 bg-white p-4 shadow-sm sm:flex-nowrap">
               <p className="text-lg font-semibold text-rose-900">Email</p>
-              <a href="mailto:warwickshiresarbojonin@gmail.com" className="mt-2 block text-base text-gray-700 hover:text-rose-700">
+              <a href="mailto:warwickshiresarbojonin@gmail.com" className="text-base text-gray-700 hover:text-rose-700">
                 warwickshiresarbojonin@gmail.com
               </a>
+            </div>
+
+            <div className="rounded-xl border border-rose-100 bg-white p-4 shadow-sm">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-rose-900">Support Warwickshire Sarbojonin</p>
+                  <p className="mt-2 text-sm leading-6 text-gray-600">
+                    To make a donation, please use the bank details below and include the reference shown.
+                  </p>
+                  <dl className="mt-4 space-y-2 text-sm text-gray-700">
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-rose-900">Account name:</dt>
+                      <dd>Warwickshire Sarbojonin</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-rose-900">Sort code:</dt>
+                      <dd>52-30-02</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-rose-900">Account number:</dt>
+                      <dd>30175461</dd>
+                    </div>
+                    <div className="flex gap-2">
+                      <dt className="font-semibold text-rose-900">Reference:</dt>
+                      <dd>DurgaPujaDonation</dd>
+                    </div>
+                  </dl>
+                </div>
+                <div className="shrink-0 text-center">
+                  <img
+                    src="/images/QR-code.jpeg"
+                    alt="QR code for donating to Warwickshire Sarbojonin"
+                    className="mx-auto h-36 w-36 rounded-lg border border-rose-100 object-contain"
+                  />
+                  <p className="mt-2 text-xs text-gray-500">Scan to donate</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

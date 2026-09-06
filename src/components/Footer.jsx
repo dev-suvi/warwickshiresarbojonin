@@ -5,7 +5,7 @@ export default function Footer() {
   const goTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-[#4f1022] text-[#fff7f2]">
       <div className="max-w-6xl mx-auto px-6 py-10">
 
         {/* Link row with separators */}
@@ -27,34 +27,34 @@ export default function Footer() {
         <div className="mt-6 flex items-center gap-6">
           <a href="https://www.facebook.com/share/18Tq25NbDk/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
              aria-label="Facebook"
-             className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
+             className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
             <Facebook className="h-6 w-6" />
           </a>
           <a href="https://www.instagram.com/warwickshiresarbojonin2025?stkn=MTBiNHBzdzRoZmw2cg==" target="_blank" rel="noopener noreferrer"
              aria-label="Instagram"
-             className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
+             className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
             <Instagram className="h-6 w-6" />
           </a>
           <a href="https://youtube.com/@warwickshiresarbojonin?feature=shared" target="_blank" rel="noopener noreferrer"
              aria-label="YouTube"
-             className="h-14 w-14 rounded-full border border-white/30 flex items-center justify-center hover:bg-white/10 hover:border-white/60 transition">
+             className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
             <Youtube className="h-6 w-6" />
           </a>
         </div>
 
         {/* Divider */}
-        <hr className="my-8 border-white/20" />
+        <hr className="my-8 border-[#f3d4a1]/20" />
 
         {/* Bottom row with copyright + back-to-top */}
         <div className="flex items-center justify-between">
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-[#f3d4a1]/80">
             &copy; {new Date().getFullYear()} Warwickshire Sarbojonin, all rights reserved.
           </p>
 
           <button
             onClick={goTop}
             aria-label="Back to top"
-            className="h-12 w-12 rounded-full border-2 border-[#e11d48] text-[#e11d48] flex items-center justify-center hover:bg-[#e11d48] hover:text-white transition"
+            className="h-12 w-12 rounded-full border-2 border-amber-300 text-amber-300 flex items-center justify-center hover:bg-amber-300 hover:text-rose-950 transition"
             title="Back to top"
           >
             <ArrowUp className="h-5 w-5" />
