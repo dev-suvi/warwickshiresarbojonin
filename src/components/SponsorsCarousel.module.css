@@ -1,0 +1,84 @@
+.viewport {
+  overflow: hidden;
+  padding-block: 0.5rem;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  min-width: 200%;
+  animation: sponsors-scroll var(--sponsor-duration, 30s) linear infinite;
+}
+
+/* Equal-width groups include the trailing gap so the loop joins seamlessly.
+   Each group fills at least the viewport, even with just two sponsors. */
+.group {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0 1.5rem 0 0;
+  list-style: none;
+}
+
+.item {
+  flex: 0 0 10rem;
+  width: 10rem;
+}
+
+@media (hover: hover) {
+  .viewport:hover .track {
+    animation-play-state: paused;
+  }
+}
+
+/* A static, wrapping list on keyboard focus keeps every original link visible. */
+.viewport:focus-within .track,
+.static .track {
+  width: 100%;
+  min-width: 0;
+  animation: none;
+}
+
+.viewport:focus-within .group,
+.static .group {
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+}
+
+.viewport:focus-within .duplicate {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .item {
+    flex-basis: 14rem;
+    width: 14rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    width: 100%;
+    min-width: 0;
+    animation: none;
+  }
+
+  .group {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .duplicate {
+    display: none;
+  }
+}
+
+@keyframes sponsors-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

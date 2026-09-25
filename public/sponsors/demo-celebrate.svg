@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="144" viewBox="0 0 320 144">
+  <path d="m160 12 8 17 19 3-14 13 3 19-16-9-16 9 3-19-14-13 19-3z" fill="#be123c"/>
+  <path d="m117 21-6-6m92 6 6-6M112 45h-9m105 0h9" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>
+  <text x="160" y="96" text-anchor="middle" fill="#881337" font-family="Georgia, serif" font-size="28" font-weight="700">CELEBRATE</text>
+  <text x="160" y="125" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" letter-spacing="3">DEMO SPONSOR</text>
+</svg>

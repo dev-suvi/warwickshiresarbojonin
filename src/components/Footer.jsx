@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import VisitorCounter from './VisitorCounter';
 import { Facebook, Instagram, Twitter, Youtube, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
@@ -41,6 +42,8 @@ export default function Footer() {
             <Youtube className="h-6 w-6" />
           </a>
         </div>
+
+        <VisitorCounter />
 
         {/* Divider */}
         <hr className="my-8 border-[#f3d4a1]/20" />

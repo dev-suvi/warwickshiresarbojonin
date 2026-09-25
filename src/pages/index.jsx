@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import SponsorsCarousel from '../components/SponsorsCarousel';
+import { sponsors } from '../lib/sponsors';
 import { CalendarDays, HeartHandshake, MapPin, Music, Sparkles, UtensilsCrossed, Users } from 'lucide-react';
 
 const EMPTY_TIME_REMAINING = {
@@ -459,6 +461,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <SponsorsCarousel sponsors={sponsors} />
 
       {selectedGalleryIndex !== null && (
         <div
