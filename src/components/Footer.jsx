@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import VisitorCounter from './VisitorCounter';
+import PageViewCounter from './PageViewCounter';
 import { Facebook, Instagram, Twitter, Youtube, ArrowUp } from 'lucide-react';
 
 export default function Footer() {
@@ -25,25 +25,26 @@ export default function Footer() {
         </nav>
 
         {/* Social icons in outlined circles */}
-        <div className="mt-6 flex items-center gap-6">
-          <a href="https://www.facebook.com/share/18Tq25NbDk/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
-             aria-label="Facebook"
-             className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
-            <Facebook className="h-6 w-6" />
-          </a>
-          <a href="https://www.instagram.com/warwickshiresarbojonin2025?stkn=MTBiNHBzdzRoZmw2cg==" target="_blank" rel="noopener noreferrer"
-             aria-label="Instagram"
-             className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
-            <Instagram className="h-6 w-6" />
-          </a>
-          <a href="https://youtube.com/@warwickshiresarbojonin?feature=shared" target="_blank" rel="noopener noreferrer"
-             aria-label="YouTube"
-             className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
-            <Youtube className="h-6 w-6" />
-          </a>
+        <div className="mt-6 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+          <div className="flex items-center gap-6">
+            <a href="https://www.facebook.com/share/18Tq25NbDk/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer"
+               aria-label="Facebook"
+               className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
+              <Facebook className="h-6 w-6" />
+            </a>
+            <a href="https://www.instagram.com/warwickshiresarbojonin2025?stkn=MTBiNHBzdzRoZmw2cg==" target="_blank" rel="noopener noreferrer"
+               aria-label="Instagram"
+               className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
+              <Instagram className="h-6 w-6" />
+            </a>
+            <a href="https://youtube.com/@warwickshiresarbojonin?feature=shared" target="_blank" rel="noopener noreferrer"
+               aria-label="YouTube"
+               className="h-14 w-14 rounded-full border border-[#f3d4a1]/40 flex items-center justify-center hover:bg-[#f3d4a1]/10 hover:border-[#f3d4a1]/80 transition">
+              <Youtube className="h-6 w-6" />
+            </a>
+          </div>
+          <PageViewCounter />
         </div>
-
-        <VisitorCounter />
 
         {/* Divider */}
         <hr className="my-8 border-[#f3d4a1]/20" />

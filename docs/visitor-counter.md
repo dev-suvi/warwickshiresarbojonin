@@ -1,84 +1,69 @@
-# Footer visitor counter
+# Footer page-view counter
+
+The footer now shows **Page views**, not unique visitors. It automatically counts
+initial page loads, refreshes and completed Next.js page navigation. Shallow URL
+updates and hash links are not counted. There is no permission prompt.
 
 ## Vercel setup
 
-1. In the Vercel Marketplace, add **Upstash Redis** and connect it to this project:
-   https://vercel.com/marketplace/upstash
-2. Ensure the integration provides either `UPSTASH_REDIS_REST_URL` and
-   `UPSTASH_REDIS_REST_TOKEN`, or `KV_REST_API_URL` and `KV_REST_API_TOKEN`.
-   Use the read/write REST token. Never prefix these variables with `NEXT_PUBLIC_`.
-3. Add a server-only `VISITOR_COUNTER_SECRET` environment variable. Generate a
-   random value with `openssl rand -hex 32` and paste it directly into Vercel's
-   environment-variable settings. Keep it stable between deployments.
-4. Redeploy using Vercel's **Next.js** framework preset and `next build`. Do not
-   override the output directory to `out` or use `next export`: `/api/visitors`
-   needs a Vercel Function. The existing static pages remain prerendered.
-5. Check `/api/visitors` returns `{"count":0}` initially. Open the footer privacy
-   disclosure and choose **Allow visitor counting**. Refresh: the count should
-   stay the same. Another consenting browser should add one.
+1. Keep the existing Upstash Redis integration connected to this project, including
+   the **Production** environment.
+2. Set either `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`, or
+   `KV_REST_API_URL` and `KV_REST_API_TOKEN`. Use the read/write REST token.
+   Do not prefix credentials with `NEXT_PUBLIC_`.
+3. `VISITOR_COUNTER_SECRET` is no longer used or required. It can be removed from
+   local and Vercel environment settings.
+4. Deploy using Vercel's Next.js preset and `next build`, with no `out` output
+   override or static export. The API runs as a function; pages remain static.
+5. Open `/api/page-views` to read the total without incrementing it. Load a website
+   page or refresh to add one. The footer places the number beside social icons
+   on screens 640px and wider, and below them on mobile.
 
-No new npm dependency is required: the server uses Upstash's REST API via fetch.
-https://upstash.com/docs/redis/features/restapi
+For local development, keep credentials in gitignored `.env.local` and restart
+`npm run dev` after changing them. Never commit or share credentials.
 
-For local development, place the same variables in the gitignored `.env.local`
-and run `npm run dev`. Set separate secrets for development/preview and production.
-The default Redis namespace is `warwickshire-${VERCEL_ENV || 'development'}`,
-so preview and local visits do not change the production count. You can override
-it with `VISITOR_COUNTER_NAMESPACE` (letters, digits, hyphens and underscores).
-Leave the production namespace stable, and use a separate database for staging
-if stronger isolation is needed. Do not enable Redis key eviction for this data.
+## Stored data and counting
 
-## Behaviour and stored data
+Only one aggregate integer is stored in Redis. The application does not create,
+read or use tracking cookies, localStorage, sessionStorage, visitor IDs, IP-based
+identification, fingerprints, or page-by-page histories for this counter. The
+client sends only `{ "action": "view" }`, omitting cookies and referrer information.
+Hosting/storage providers still process network requests for delivery and security.
 
-- GET reads only the aggregate. It never sets cookies or increments anything.
-- Counting requires opt-in. Consent is remembered in localStorage for one year;
-  localStorage does not store a visitor ID or the shared count.
-- POST prepare creates a signed, random HttpOnly, SameSite=Strict cookie, Secure
-  in production. The next POST must return the cookie before anything is counted.
-  Cookie-blocking browsers are therefore not counted on each refresh.
-- Browser JavaScript never reads the token. As with all cookies, the browser
-  owner can inspect their own cookie using developer tools.
-- An HMAC of the random ID becomes a Redis marker key, retained only until the
-  cookie's original expiry (at most 365 days). Returning visits do not extend it.
-  The total has no expiry and survives deployments. There is no historical count
-  to import; it begins at zero when first enabled.
-- A Lua script checks the marker and updates the total without concurrent
-  requests interleaving. Retrying the same visit does not increment again.
-- Web Locks serialize initial cookie creation between tabs where supported.
-  Simultaneous first visits in browsers without Web Locks can still overcount.
-- Responses expose only totals or generic status/errors, never tokens, hashes,
-  credentials, IP addresses, or provider error details. APIs are not cached.
-- Cookie deletion, different devices, expiry, and deliberately automated visits
-  can raise the total. This is an estimate of consenting browsers, not people.
-- Revoking consent stops future counting and clears the cookie. The aggregate
-  remains; the deduplication marker expires on its original schedule. Reconsenting
-  after cookie deletion can count again.
-- The counter loads after hydration. Missing configuration, invalid responses,
-  or storage outages hide the number, or retain the last successfully loaded total.
-  Previously opted-in browsers can still access the withdrawal control during outages.
+Redis INCR updates the total atomically, so simultaneous views cannot overwrite
+one another. The total has no expiry and survives deployments. The default key is
+`{warwickshire-production:page-views}:total` in production, with separate development
+and preview namespaces. `PAGE_VIEW_COUNTER_NAMESPACE` can override the namespace;
+existing `VISITOR_COUNTER_NAMESPACE` settings remain supported as a fallback.
+Use letters, digits, hyphens or underscores. Keep production settings stable and
+Redis eviction disabled to preserve the total.
 
-## Privacy and operation
+The client counts after hydration and reuses the initial request during React
+Strict Mode's effect replay. It listens for completed route changes, not clicks or
+prefetches. It does not automatically retry a failed POST because the increment
+may already have succeeded. With no persistent browser identity, this is an
+approximate page-view metric, not an abuse-resistant measure of real people.
+JavaScript-disabled visits or blocked/failed requests may not count; automated
+requests may inflate it. A service failure hides the number or keeps the last
+successfully loaded total without interrupting the website.
 
-The footer explains the optional cookie, preference storage, provider, retention,
-and withdrawal. No tracking occurs until opt-in; reading the public total requires
-no tracking cookie. Token hashes are pseudonymous, not anonymous personal data.
-Keep your site's privacy notice and Upstash processing agreement/region consistent
-with this use. Vercel/Upstash infrastructure may process network metadata for
-delivery/security; this application does not use IPs for identification or logging.
-See https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/
+## Migration from the opt-in visitor counter
 
-Keep Redis credentials and the signing secret private. Review provider usage and
-configure appropriate spending limits. Same-origin checks and signed cookies
-reduce accidental or cross-site increments, but the public counter is not a
-fraud-proof analytics system. If abuse occurs, use hosting-level protections.
+Page views use a **new key starting at zero**. Historical opted-in visitor totals
+are not relabelled as page views. The old `/api/visitors` route, cookie code,
+signing logic, identifier storage and permission UI have been removed.
 
-Rotating the signing secret invalidates existing cookies and can cause returning
-browsers to count again. Deleting Redis keys, changing namespace, or moving to a
-new database without migrating data resets the total; do not do so on redeploy.
+Existing `ws_visitor` cookies and `ws-visitor-counting` preferences from the old
+version are no longer read, sent by the counter, refreshed, or used. Old cookies
+expire on their original schedule. Old Redis `:seen:` keys also expire under their
+original TTL; the old aggregate remains separate. The unused browser preference
+can be removed through browser settings. No old records are deleted automatically.
 
 ## Verification
 
-Run `node --test tests/visitor-counter.test.cjs` for API/privacy/failure tests.
-The tests use a mocked REST transport; validate the deployed Redis script with
-two browsers after connecting the real service. Production build:
-`npm run build -- --webpack` (the default Turbopack build stalled locally).
+Run `node --test tests/page-view-counter.test.cjs` and
+`npm run build -- --webpack`. Tests cover atomic-command wiring, repeated views,
+origin checks, failures, cookie-free requests, SSR, effect replay and navigation.
+The default Turbopack build previously stalled locally.
+
+Provider documentation: https://upstash.com/docs/redis/features/restapi
