@@ -1,6 +1,8 @@
 const highlightImages = [
-  '/yearly-event-calendar/622500238_122149707434955683_3041635157044469270_n.jpg',
-  '/yearly-event-calendar/622981366_122149707428955683_1235882776177156932_n.jpg',
+  '/yearly-event-calendar/1.jpeg',
+  '/yearly-event-calendar/2.jpeg',
+  '/yearly-event-calendar/3.jpeg',
+  '/yearly-event-calendar/4.jpeg',
 ];
 
 export default function YearlyEventCalendarPage() {
