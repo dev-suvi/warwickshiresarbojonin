@@ -231,7 +231,7 @@ export default function Home() {
     { title: 'Sasthi', dateHtml: '16<sup>th</sup> Oct 2026, Friday', imageSrc: '/events/event1.jpg' },
     { title: 'Saptami', dateHtml: '17<sup>th</sup> Oct 2026, Saturday', imageSrc: '/events/event2.jpg' },
     { title: 'Ashtami', dateHtml: '18<sup>th</sup> Oct 2026, Sunday', imageSrc: '/events/event3.jpg' },
-    { title: 'Nabomi & Dashami', dateHtml: '18<sup>th</sup> Oct 2026, Sunday', imageSrc: '/events/event4.jpg' },
+    { title: 'Nabomi & Dashami', dateHtml: '19<sup>th</sup> Oct 2026, Monday', imageSrc: '/events/event4.jpg' },
   ];
 
   const festivalHighlights = [
