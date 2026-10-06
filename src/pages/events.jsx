@@ -42,7 +42,7 @@ export default function EventsPage({ galleryGroups }) {
     },
     {
       title: 'Nabami & Dashami',
-      dateHtml: '18<sup>th</sup> Oct 2026, Sunday',
+      dateHtml: '19<sup>th</sup> Oct 2026, Monday',
       time: '9:00 AM - 10:00 PM',
       imageSrc: '/events/event4.jpg',
     },
